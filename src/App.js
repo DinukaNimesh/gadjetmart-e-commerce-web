@@ -8,10 +8,10 @@ import SignUpScreen from "./views/SignUpScreen";
 function App() {
   return (
     <section>
-      {/* <LoginScreen/> */}
-      {/* <SignUpScreen /> */}
-      {/* <HomeScreen/> */}
-      <CartScreen />
+       {/*<LoginScreen/>*/}
+       {/*<SignUpScreen />*/}
+       <HomeScreen/>
+      {/* <CartScreen /> */}
     </section>
   );
 }

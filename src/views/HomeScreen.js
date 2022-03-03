@@ -22,6 +22,10 @@ function HomeScreen() {
 
                                 <div id='header-action-container'>
                                         <div>
+                                                <img src={require('../assets/profile.png')} id="header-profile-logo" />
+                                        </div>
+                                        
+                                         <div>
                                                 <img src={require('../assets/cart.png')} id="header-cart-logo" />
                                                 <Badge color="warning" pill id='header-cart-badge'>3</Badge>
                                         </div>
