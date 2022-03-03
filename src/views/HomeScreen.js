@@ -6,6 +6,8 @@ import '../css/views/HomeScreen.css';
 import { Button, Badge } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
 import { showFailedToast, showSuccessToast } from '../config/showToast';
+// ** import components
+import CompanyPanel from '../components/Home/CompanyPanel';
 
 
 function HomeScreen() {
@@ -58,6 +60,11 @@ function HomeScreen() {
                                         Softlogic
                                 </Button>
                         </div>
+
+
+                        <section>
+                                <CompanyPanel />
+                        </section>
 
                 </main>
         )

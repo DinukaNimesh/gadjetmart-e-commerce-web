@@ -7,6 +7,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        overflow: hidden;  /* scroll */
 }
 
 #header-Container {
@@ -31,7 +33,7 @@
 
 #logo-text {
         font-family: 'Roboto', sans-serif;
-        font-size: 30px;
+        font-size: 2rem;
         text-transform: uppercase;
         font-weight: bold;
         margin-top: 5px;
@@ -76,8 +78,6 @@
         height: 35px;
 }
 
-
-
 #toggle-button-Container {
         display: flex;
         flex-direction: row;
@@ -95,4 +95,6 @@
         padding-right: 40px;
         margin-right: 3px;
 }
+
+
 
