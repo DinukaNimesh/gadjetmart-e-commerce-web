@@ -1,5 +1,5 @@
 // ** core
-import React from 'react';
+import React, {useState} from 'react';
 // ** css
 import '../css/views/CartScreen.css';
 // ** external components
@@ -12,10 +12,17 @@ import SidePanel from '../components/Cart/SidePanel';
 import MiddlePanel from '../components/Cart/MiddlePanel';
 
 function CartScreen() {
+
+  const [isCartViewPanel, setisCartViewPanel] = useState(true);
+
+  const togglePanelHandler = (isCardView) => {
+      setisCartViewPanel(isCardView);
+  }
+
   return (
     <main id='cart-container'>
-            <SidePanel />
-            <MiddlePanel/>
+            <SidePanel togglePanel={togglePanelHandler} />
+            <MiddlePanel isCardViewOpen={isCartViewPanel}/>
 
     </main>
   )

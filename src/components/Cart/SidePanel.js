@@ -1,5 +1,5 @@
 // ** core
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // ** css
 import '../../css/components/Cart/SidePanel.css';
 // ** external components
@@ -7,22 +7,27 @@ import { Button, Badge } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
 import { showFailedToast, showSuccessToast } from '../../config/showToast';
 
-function SidePanel() {
-        const [isCardView, setisCardView] = useState(true);
+function SidePanel({togglePanel}) {
+        const [isCartView, setisCartView] = useState(true);
+
+        useEffect(() => {
+                togglePanel(isCartView)
+        }, [isCartView]);
+        
         return (
                 <section id='cart-side-panel-container'>
                         <Button
-                                onClick={() => setisCardView(true)}
+                                onClick={() => setisCartView(true)}
                                 id='side-panel-item'
-                                color={isCardView ? 'primary' : 'secondary'}
+                                color={isCartView ? 'primary' : 'secondary'}
                         >
                                 Cart View
                         </Button>
 
                         <Button
-                                onClick={() => setisCardView(false)}
+                                onClick={() => setisCartView(false)}
                                 id='side-panel-item'
-                                color={!isCardView ? 'primary' : 'secondary'}
+                                color={!isCartView ? 'primary' : 'secondary'}
                         >
                                 Order History View
                         </Button>
