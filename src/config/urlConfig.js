@@ -1,9 +1,9 @@
-export const baseURL="http://localhost:8020/auth/api/v1";
+export const baseURL="http://localhost:8020";
 
-export const loginURL="/signIn";
-export const signUpURL="/signUp";
-export const updateUserURL="/update";
-export const getUserURL="/details/"; // **  /details/{email}
+export const loginURL="/auth/api/v1/signIn";
+export const signUpURL="/auth/api/v1/signUp";
+export const updateUserURL="/auth/api/v1/update";
+export const getUserURL="/auth/api/v1/details/"; // **  /details/{email}
 
-export const getSuppliersURL="/suppliers";
-export const getProductsURL="/products";
+export const getSuppliersURL="/company/api/v1/suppliers";
+export const getProductsURL="/company/api/v1/products";

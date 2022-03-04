@@ -1,5 +1,5 @@
 // ** core
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 // ** css
 import '../css/views/HomeScreen.css';
 // ** external components
@@ -10,9 +10,44 @@ import { showFailedToast, showSuccessToast } from '../config/showToast';
 import CompanyPanel from '../components/Home/CompanyPanel';
 import { Link } from 'react-router-dom';
 import Loader from '../config/LoaderConfig';
+import {getAllProductApiHandler, getSupplierApiHandler} from "../config/API";
 
 
 function HomeScreen() {
+        let[suppliers, setSuppliers] = useState([]);
+        let[products, setProducts] = useState([]);
+        let[selectSupplier, setSelectSupplier] = useState(0);
+        let[brandOption, setBrandOption] = useState({});
+        let[categoryOption, setCategoryOption] = useState({});
+
+
+        useEffect(() => {
+                (async function () {
+
+                        let response = await getSupplierApiHandler();
+                        let response2 = await getAllProductApiHandler();
+
+                        if (response?.data?.code === '200') {
+                                setSuppliers(response?.data?.result)
+                        } else {
+                                setSuppliers([]);
+                        }
+
+                        if (response2?.data?.code === '200') {
+                                setProducts(response2?.data?.result)
+
+                        } else {
+                                setProducts([]);
+                        }
+                })();
+
+
+        }, []);
+
+
+
+
+
         return (
                 <main className='main-container'>
 
@@ -43,35 +78,35 @@ function HomeScreen() {
                         <div id='toggle-button-Container'>
                                 {/* button 01 */}
                                 <Button
-                                        color={true ? "primary" : "secondary"}
+                                        color={(selectSupplier === 0) ? "primary" : "secondary"}
                                         id='button-tab'
-                                        onClick={() => showFailedToast("Failed")}
+                                        onClick={() => setSelectSupplier(0)}
                                 >
-                                        Abans
+                                        {suppliers.length > 0 ? suppliers[0].name : '-'}
                                 </Button>
 
                                 {/* button 02 */}
                                 <Button
-                                        color={false ? "primary" : "secondary"}
+                                        color={(selectSupplier === 1) ? "primary" : "secondary"}
                                         id='button-tab'
-                                        onClick={() => showFailedToast("Failed")}
+                                        onClick={() =>  setSelectSupplier(1)}
                                 >
-                                        Singer
+                                        {suppliers.length > 1 ? suppliers[1].name : '-'}
                                 </Button>
 
                                 {/* button 03 */}
                                 <Button
-                                        color={false ? "primary" : "secondary"}
+                                        color={(selectSupplier === 2) ? "primary" : "secondary"}
                                         id='button-tab'
-                                        onClick={() => showFailedToast("Failed")}
+                                        onClick={() =>  setSelectSupplier(2)}
                                 >
-                                        Softlogic
+                                        {suppliers.length > 2 ? suppliers[2].name : '-'}
                                 </Button>
                         </div>
 
 
                         <section>
-                                <CompanyPanel />
+                                <CompanyPanel products={products} supplier={suppliers[selectSupplier]}/>
                         </section>
                         <Loader isLoading={false} />
 

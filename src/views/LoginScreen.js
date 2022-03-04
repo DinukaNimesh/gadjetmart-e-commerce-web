@@ -34,7 +34,12 @@ function LoginScreen() {
             if (code === '200') {
                 showSuccessToast("Login Success!");
 
+                // ** store token
+               await localStorage.setItem('token', JSON.stringify(result.token));
+
+               // ** navigate to home
                 navigate && navigate('/home');
+
                 return true;
             } else if (code === '500') {
                 showFailedToast(result)

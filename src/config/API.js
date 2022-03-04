@@ -1,5 +1,5 @@
 import axios from "axios";
-import {baseURL, getSuppliersURL, getUserURL, loginURL, signUpURL, updateUserURL} from "./urlConfig";
+import {baseURL, getProductsURL, getSuppliersURL, getUserURL, loginURL, signUpURL, updateUserURL} from "./urlConfig";
 import {showFailedToast, showSuccessToast} from "./showToast";
 
 // ** AUTH
@@ -78,7 +78,10 @@ export const getUserApiHandler =  async (email) => {
 export const getSupplierApiHandler = async () => {
     let url = baseURL + getSuppliersURL;
     try {
-        let data = await axios.get(url);
+        let token = await localStorage.getItem('token');
+
+        let response = await axios.get(url,  { headers: {"Authorization" : `Bearer ${JSON.parse(token)}`} });
+        return response;
     } catch (e) {
         console.warn(e);
         showFailedToast("Internal Server Error - code [500]");
@@ -87,9 +90,11 @@ export const getSupplierApiHandler = async () => {
 
 
 export const getAllProductApiHandler = async () => {
-    let url = baseURL + getUserURL;
+    let url = baseURL + getProductsURL;
     try {
-        let data = await axios.get(url);
+        let token = await localStorage.getItem('token');
+        let response = await axios.get(url,  { headers: {"Authorization" : `Bearer ${JSON.parse(token)}`} });
+        return response;
     } catch (e) {
         console.warn(e);
         showFailedToast("Internal Server Error - code [500]");

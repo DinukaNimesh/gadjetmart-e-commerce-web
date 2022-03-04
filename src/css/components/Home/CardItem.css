@@ -1,6 +1,6 @@
 #card-item-container {
         width: 250px;
-        height: 350px;
+        height: 370px;
         background: #fff;
         border-radius: 10px;
 
@@ -18,11 +18,19 @@
 
 #card-item-title {
         font-family: 'Roboto', sans-serif;
-        font-size: 15px;
+        font-size: 14px;
         color: #000;
         font-weight: bold;
 
         margin-top: 10px;
+}
+
+#price-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;;
+        align-items: center;
+        padding-right: 10px;
 }
 
 #card-item-price {
@@ -31,7 +39,7 @@
         color: #000;
         font-weight: bold;
 
-        margin-top: 10px;   
+        margin-top: 10px;
 }
 
 #card-item-description {

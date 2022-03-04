@@ -1,81 +1,150 @@
 // ** core
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 // ** css
 import '../../css/components/Home/CompanyPanel.css';
 import '../../css/components/Home/filter.css';
 // ** external components
-import { Button, Badge } from 'reactstrap';
-import { ToastContainer } from 'react-toastify';
+import {Button} from 'reactstrap';
 import Select from 'react-select';
 // ** import components
-import { showFailedToast, showSuccessToast } from '../../config/showToast';
 import CardItem from './CardItem';
 
-function AbansPanel() {
+function CompanyPanel({products = [], supplier = ''}) {
 
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
+    let[selectProduct, setSelectProduct] = useState([]);
+    let[selectBrand, setSelectBrand] = useState('');
+    let[selectCategory, setSelectCategory] = useState('');
+    let[text, setText] = useState('');
+
+    const brandOptions = [
+        {value: '', label: ''},
+    ];
+
+    const categoryOptions = [
+        {value: '', label: ''},
+    ]
 
 
-  return (
-    <>
+    if (supplier && products) {
+        let productArr = products[supplier?.name];
 
-      <section id='filter-container'>
-        <div id='filter-item'>
-          <label>Brand</label>
-          <Select options={options} defaultValue={options[1]} onChange={(val) => console.log(val)} />
-        </div>
+        let proOptions = [];
+        let catOptions = [];
+        productArr?.map(item => {
+            proOptions.push(item.brand);
+            catOptions.push(item.category);
+        })
 
-        <div id='filter-item'>
-          <label>Category</label>
-          <Select options={options} defaultValue={options[1]} onChange={(val) => console.log(val)} />
-        </div>
+        // remove duplicate
+        let uniquePro = [...new Set(proOptions)];
+        let uniqueCat = [...new Set(catOptions)];
 
-        <div id='filter-item'>
-          <label>Product name: </label>
-          <input id='search-input' />
-        </div>
-      </section>
 
-      <div id='button-container'>
-      <Button
-        color='info'
-        onClick={() => console.log("working...")}
-        id='filter-button'
-      >
-        filter
-      </Button>
-      
-      <Button
-        color='secondary'
-        onClick={() => console.log("working...")}
-        id='filter-button'
-        disabled
-      >
-        reset
-      </Button>
-      </div>
+        uniquePro?.map(item => {
+            brandOptions.push(
+                {value: item,  label: item }
+            );
+        })
 
-      <hr />
+        uniqueCat?.map(item => {
+            categoryOptions.push(
+                {value: item,  label: item }
+            );
+        });
+    }
 
-      <main id='home-tab-panel-container'>
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-        <CardItem />
-      </main>
-    </>
-  )
+
+
+    useEffect(() => {
+        if (supplier && products ) {
+            setSelectProduct(products[supplier?.name]);
+        }
+    }, [products, supplier]);
+
+    useEffect(() => {
+       if (text === '') {
+           if (supplier && products ) {
+               setSelectProduct(products[supplier?.name]);
+           }
+       }
+    }, [text]);
+
+
+    const isEnabled=selectBrand && selectCategory && text;
+
+    const filterHandler = () => {
+        let filter = selectProduct?.filter(product => {
+            return product.brand === selectBrand && product.category === selectCategory && product?.name?.toUpperCase()?.includes(text.toUpperCase());
+        });
+
+        setSelectProduct(filter)
+    }
+
+    const resetHandler = () => {
+        if (supplier && products ) {
+            setSelectProduct(products[supplier?.name]);
+        }
+        setSelectCategory('');
+        setSelectBrand('');
+        setText('');
+
+    }
+
+
+    return (
+        <>
+
+            <section id='filter-container'>
+                <div id='filter-item'>
+                    <label>Brand</label>
+                    <Select options={brandOptions}  onChange={(val) => setSelectBrand(val.value)}/>
+                </div>
+
+                <div id='filter-item'>
+                    <label>Category</label>
+                    <Select options={categoryOptions}  onChange={(val) => setSelectCategory(val.value)}/>
+                </div>
+
+                <div id='filter-item'>
+                    <label>Product name: </label>
+                    <input id='search-input' onChange={data => setText(data.target.value)} value={text}/>
+                </div>
+            </section>
+
+            <div id='button-container'>
+                <Button
+                    color='info'
+                    onClick={filterHandler}
+                    id='filter-button'
+                    disabled={!isEnabled}
+                >
+                    filter
+                </Button>
+
+                <Button
+                    color='secondary'
+                    onClick={resetHandler}
+                    id='filter-button'
+                    disabled
+                >
+                    reset
+                </Button>
+            </div>
+
+            <hr/>
+
+            <main id='home-tab-panel-container'>
+
+                {supplier && products && selectProduct?.map((item, index) => <CardItem key={index}
+                                                                                                  data={item}
+                                                                                                  title={item?.name}
+                                                                                                  image={item.images[0]}
+                                                                                                  description={item?.description}
+                                                                                                  price={item?.price}/>)}
+
+            </main>
+        </>
+    )
 }
 
-export default AbansPanel;
+export default CompanyPanel;
