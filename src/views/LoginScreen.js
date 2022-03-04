@@ -6,13 +6,14 @@ import '../css/views/LoginScreen.css';
 import { Button } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
 import { showFailedToast, showSuccessToast } from '../config/showToast';
+import { Link } from 'react-router-dom';
 
 function LoginScreen() {
 
 
 
         return (
-                <main className='main-container'>
+                <main className='main-auth-container'>
 
                         <img src={require('../assets/logo-b.png')} id='logo' />
 
@@ -39,13 +40,15 @@ function LoginScreen() {
                                 />
 
                                 <div id='button-login-container'>
-                                        <Button
+                                       <Link to='/home'>
+                                       <Button
                                                 color="primary"
                                                 id='button-login'
                                                 onClick={() => showFailedToast("Failed")}
                                         >
                                                 Let's Go
                                         </Button>
+                                       </Link>
 
                                         <label id='warning-text'>
                                                 <b>WARNING: </b>
@@ -55,7 +58,9 @@ function LoginScreen() {
 
                         <footer id='footer-container'>
                                 <h3 id='footer-text'>Don't have an account?</h3>
-                                <a id='footer-link'>signup</a>
+                               <Link to="/auth/signup">
+                               <h3 id='footer-link'>signup</h3>
+                               </Link>
                         </footer>
 
 

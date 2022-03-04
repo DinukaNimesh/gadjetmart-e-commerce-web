@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import { showFailedToast, showSuccessToast } from '../config/showToast';
 // ** import components
 import CompanyPanel from '../components/Home/CompanyPanel';
+import { Link } from 'react-router-dom';
+import Loader from '../config/LoaderConfig';
 
 
 function HomeScreen() {
@@ -24,12 +26,14 @@ function HomeScreen() {
                                         <div>
                                                 <img src={require('../assets/profile.png')} id="header-profile-logo" />
                                         </div>
-                                        
-                                         <div>
+
+                                        <Link to='/cart'>
                                                 <img src={require('../assets/cart.png')} id="header-cart-logo" />
                                                 <Badge color="warning" pill id='header-cart-badge'>3</Badge>
-                                        </div>
-                                        <img src={require('../assets/log-out.png')} id="header-logout-logo" />
+                                        </Link>
+                                        <Link to='/'>
+                                                <img src={require('../assets/log-out.png')} id="header-logout-logo" />
+                                        </Link>
 
                                 </div>
                         </header>
@@ -69,6 +73,7 @@ function HomeScreen() {
                         <section>
                                 <CompanyPanel />
                         </section>
+                        <Loader isLoading={false} />
 
                 </main>
         )

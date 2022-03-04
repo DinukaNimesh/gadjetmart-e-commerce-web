@@ -6,10 +6,11 @@ import '../css/views/LoginScreen.css';
 import { Button } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
 import { showFailedToast, showSuccessToast } from '../config/showToast';
+import { Link } from 'react-router-dom';
 
 function SignUpScreen() {
         return (
-                <main className='main-container'>
+                <main className='main-auth-container'>
 
                         <img src={require('../assets/logo-b.png')} id='logo' />
 
@@ -42,8 +43,8 @@ function SignUpScreen() {
                                         type="text"
                                 />
 
-                                 {/* input  */}
-                                 <label id='form-label'>e-mail address</label>
+                                {/* input  */}
+                                <label id='form-label'>e-mail address</label>
                                 <input
                                         className='input-regular'
                                         placeholder=''
@@ -59,8 +60,8 @@ function SignUpScreen() {
                                         type='password'
                                 />
 
-                                 {/* input  */}
-                                 <label id='form-label'>retype password</label>
+                                {/* input  */}
+                                <label id='form-label'>retype password</label>
                                 <input
                                         className='input-regular'
                                         placeholder=''
@@ -89,7 +90,9 @@ function SignUpScreen() {
 
                         <footer id='footer-container'>
                                 <h3 id='footer-text'>Already have an account?</h3>
-                                <a id='footer-link'>login</a>
+                                <Link to='/'>
+                                        <a id='footer-link'>login</a>
+                                </Link>
                         </footer>
 
                         {/* toast : important */}
