@@ -125,7 +125,6 @@ function CompanyPanel({products = [], supplier = ''}) {
                     color='secondary'
                     onClick={resetHandler}
                     id='filter-button'
-                    disabled
                 >
                     reset
                 </Button>
