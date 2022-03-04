@@ -1,0 +1,101 @@
+import axios from "axios";
+import {baseURL, getSuppliersURL, getUserURL, loginURL, signUpURL, updateUserURL} from "./urlConfig";
+import {showFailedToast, showSuccessToast} from "./showToast";
+
+// ** AUTH
+export const signInApiHandler =  async ({email, password}) => {
+    let url = baseURL + loginURL
+    try {
+        let response = await axios.post(url, {
+            email: email,
+            password: password
+        });
+
+        return response;
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+export const signUpApiHandler = async ({firstName, lastName, address, email, password }) => {
+    let url = baseURL + signUpURL;
+    try {
+        let response = await axios.post(url, {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            address: address,
+            password: password
+        });
+
+        return response;
+
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+export const updateUserApiHandler =  async ({firstName, lastName, address, email }) => {
+    let url = baseURL + updateUserURL;
+
+    try {
+        let response = await axios.post(url, {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            address: address,
+        });
+
+        let {code, result} = response.data
+
+        if (code === '200') {
+            showSuccessToast("Account has been updated!")
+        } else if (code === '500') {
+            showFailedToast(result)
+        }
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+export const getUserApiHandler =  async (email) => {
+    let url = baseURL + getUserURL + email;
+    try {
+        let data = await axios.get(url);
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+
+
+
+// ** COMPANY
+export const getSupplierApiHandler = async () => {
+    let url = baseURL + getSuppliersURL;
+    try {
+        let data = await axios.get(url);
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+
+export const getAllProductApiHandler = async () => {
+    let url = baseURL + getUserURL;
+    try {
+        let data = await axios.get(url);
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+
+// ** ORDER
+// ** ADMIN
