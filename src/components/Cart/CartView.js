@@ -5,91 +5,67 @@ import '../../css/components/Cart/CartView.css';
 // ** external components
 import {Button} from 'reactstrap';
 import ListItem from './ListItem';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {remove_duplicates_es6} from "../../util/customArray";
+import {createOrderApiHandler} from "../../config/API";
+import {showFailedToast, showSuccessToast} from "../../config/showToast";
+import {ToastContainer} from "react-toastify";
+import {addToCartAction} from "../../redux/actions/cartAction";
 
 function CartView() {
     let cart = useSelector(state => state.cartState.cart);
     const [selectSuppliers, setSelectSuppliers] = useState([]);
-    const [totalPrice, setTotalPrice] = useState([]);
     const [finalPrice, setFinalPrice] = useState(0);
+    const [itemArray, setItemArray] = useState([]);
+    const [isDisabled, setIsDisabled] = useState(false);
+
+    const dispatch = useDispatch();
 
 
-
-    // useEffect(() => {
-    //     let tot = 0;
-    //     totalPrice.map(item => {
-    //         tot += Number(item.total)
-    //     })
-    //
-    //     setFinalPrice(tot);
-    // }, [totalPrice]);
-
-
-    // const totalPriceHandler = (data) => {
-    //     let { id, supplier} = data;
-    //     setSelectSuppliers([...selectSuppliers, ...supplier])
-    //     let uniqueSup = selectSuppliers.filter(item => !(item === supplier));
-    //     setSelectSuppliers(uniqueSup);
-    //
-    //
-    //     let temp = [...totalPrice];
-    //
-    //     // unique data
-    //     let filter = temp.filter(item => !(item.id ===id));
-    //     // console.warn(filter)
-    //     console.warn(temp)
-    //      filter.push(data);
-    //
-    //      setTotalPrice(filter);
-    //
-    // }
-
-
-
-    // const totalPriceHandler = (data) => {
-    //     let { id, supplier} = data;
-    //     setSelectSuppliers([...selectSuppliers, ...supplier])
-    //     let uniqueSup = selectSuppliers.filter(item => !(item === supplier));
-    //     setSelectSuppliers(uniqueSup);
-    //
-    //
-    //     let temp = [...totalPrice];
-    //
-    //     // unique data
-    //     let filter = temp.filter(item => !(item.id ===id));
-    //     // console.warn(filter)
-    //     console.warn(temp)
-    //     filter.push(data);
-    //
-    //     setTotalPrice(filter);
-    //
-    // }
 
     useEffect(() => {
         if (cart) {
 
             let suppliers = [];
+            let itemArr = [];
             let total = 0;
             cart.map(item => {
                suppliers.push(item.supplier)
 
                 let tot = Number(item.count) * Number(item.price);
                 total += tot;
+
+                let sample =  {
+                    itemName: item?.name,
+                    subtotal: (Number(item?.price) * Number(item?.count)),
+                    itemImage:item?.images[0],
+                    shopName: item?.supplier,
+                    deliveryLocation: item?.deliveryLocation,
+                    warrantyRequest: item?.warrantyRequest,
+                    qty: Number(item?.count)
+                }
+
+                itemArr.push(sample);
             });
+
+            setItemArray(itemArr);
 
             let uniqueSup = remove_duplicates_es6(suppliers);
             setSelectSuppliers(uniqueSup)
             setFinalPrice(total);
-            console.log(uniqueSup)
+
+
+            // pay button disabled
+            let filter = itemArr?.filter(item => item.deliveryLocation === '' || item.warrantyRequest === '');
+            if (filter.length > 0) {
+                setIsDisabled(true);
+            } else {
+                setIsDisabled(false);
+            }
+
         }
 
     }, [cart]);
-
-
-
-
-
 
 
 
@@ -98,18 +74,27 @@ function CartView() {
         let email = await localStorage.getItem('email');
         let userDto = {email};
 
-        // let data = {
-        //     userDto,
-        //     totalPrice:finalPrice,
-        //     shops: selectSuppliers,
-        //     details: cart
-        // }
+
+        let data = {
+            userDto,
+            totalPrice:finalPrice,
+            shops: selectSuppliers,
+            details: itemArray
+        }
+
+        let response = await createOrderApiHandler(data);
+        let {code, result} = response?.data
+        if (code === '200') {
+            showSuccessToast("Order has been created!");
+            dispatch(addToCartAction(null));
+            setFinalPrice(0);
+        } else {
+            showFailedToast("Order hasn't been created!")
+        }
     }
 
-    console.log("cart ; ",cart)
     return (
         <>
-
             <h5 id='cart-middle-panel-title'>Cart View</h5>
 
             <section id='cart-item-list-container'>
@@ -133,10 +118,13 @@ function CartView() {
                     id='checkout-button'
                     color='primary'
                     onClick={payNowHandler}
+                    disabled={isDisabled}
                 >
                     PAY NOW
                 </Button>
             </footer>
+            {/* toast : important */}
+            <ToastContainer/>
         </>
     )
 }

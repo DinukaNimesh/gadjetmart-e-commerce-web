@@ -42,6 +42,13 @@
 
 }
 
+#input-list-item {
+        width: 300px;
+}
+#input-item {
+        width: 250px;
+}
+
 #action-list-item {
         width: 220px;
 
