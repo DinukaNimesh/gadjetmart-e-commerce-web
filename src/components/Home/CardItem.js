@@ -52,7 +52,6 @@ function CardItem({
 
     }
 
-    console.warn(cart)
 
     return (
         <section id='card-item-container'>

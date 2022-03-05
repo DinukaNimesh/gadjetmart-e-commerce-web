@@ -11,6 +11,7 @@ import CompanyPanel from '../components/Home/CompanyPanel';
 import { Link } from 'react-router-dom';
 import Loader from '../config/LoaderConfig';
 import {getAllProductApiHandler, getSupplierApiHandler} from "../config/API";
+import {useSelector} from "react-redux";
 
 
 function HomeScreen() {
@@ -18,6 +19,7 @@ function HomeScreen() {
         let[products, setProducts] = useState([]);
         let[selectSupplier, setSelectSupplier] = useState(0);
 
+        let cart = useSelector(state => state.cartState.cart);
 
         useEffect(() => {
                 (async function () {
@@ -62,7 +64,8 @@ function HomeScreen() {
 
                                         <Link to='/cart'>
                                                 <img src={require('../assets/cart.png')} id="header-cart-logo" />
-                                                <Badge color="warning" pill id='header-cart-badge'>3</Badge>
+                                                {(cart && cart?.length > 0) && <Badge color="warning" pill
+                                                        id='header-cart-badge'>{cart?.length}</Badge>}
                                         </Link>
                                         <Link to='/'>
                                                 <img src={require('../assets/log-out.png')} id="header-logout-logo" />
