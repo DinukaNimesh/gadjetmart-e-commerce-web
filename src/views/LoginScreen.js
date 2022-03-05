@@ -6,8 +6,9 @@ import '../css/views/LoginScreen.css';
 import {Button} from 'reactstrap';
 import {ToastContainer} from 'react-toastify';
 import {showFailedToast, showSuccessToast, showWarningToast} from '../config/showToast';
-import {Link, useNavigate, } from 'react-router-dom';
+import {Link, useNavigate,} from 'react-router-dom';
 import {signInApiHandler} from "../config/API";
+import Loader from "../config/LoaderConfig";
 
 function LoginScreen() {
     let navigate = useNavigate();
@@ -17,11 +18,12 @@ function LoginScreen() {
         password: '',
     });
 
+    let [isLoading, setIsLoading] = useState(false);
 
 
     const saveHandler = async () => {
         if (credential?.username !== '' && credential?.password !== '') {
-
+            setIsLoading(true);
 
             // ** API invoke
             let response = await signInApiHandler({
@@ -29,17 +31,17 @@ function LoginScreen() {
                 password: credential.password,
             });
 
-
+            setIsLoading(false);
             let {code, result} = response?.data
 
             if (code === '200') {
                 showSuccessToast("Login Success!");
 
                 // ** store token
-               await localStorage.setItem('token', JSON.stringify(result.token));
-               await localStorage.setItem('email', JSON.stringify(credential.username));
+                await localStorage.setItem('token', JSON.stringify(result.token));
+                await localStorage.setItem('email', JSON.stringify(credential.username));
 
-               // ** navigate to home
+                // ** navigate to home
                 navigate && navigate('/home');
 
                 return true;
@@ -116,7 +118,7 @@ function LoginScreen() {
                 </Link>
             </footer>
 
-
+            <Loader isLoading={isLoading} />
             {/* toast : important */}
             <ToastContainer/>
         </main>

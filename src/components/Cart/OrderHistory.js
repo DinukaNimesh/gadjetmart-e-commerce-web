@@ -11,13 +11,16 @@ import { showFailedToast, showSuccessToast } from '../../config/showToast';
 import ListItem from "./ListItem";
 import HistoryItem from './HistoryItem';
 import {getOrderByUserEmailApiHandler} from "../../config/API";
+import Loader from "../../config/LoaderConfig";
 
 function OrderHistory() {
 
     const [itemArray, setItemArray] = useState([]);
+    let [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         async function initialInvoke () {
+            setIsLoading(true);
             let email = await localStorage.getItem('email');
             let response = await getOrderByUserEmailApiHandler(JSON.parse(email));
             let {code, result} = response?.data;
@@ -28,6 +31,8 @@ function OrderHistory() {
             } else {
                 setItemArray([]);
             }
+
+            setIsLoading(false)
 
         }
 
@@ -47,7 +52,7 @@ function OrderHistory() {
 
       </section>
 
-
+        <Loader isLoading={isLoading} />
     </>
   )
 }

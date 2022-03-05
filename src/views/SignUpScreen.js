@@ -7,8 +7,9 @@ import {Button} from 'reactstrap';
 import {ToastContainer} from 'react-toastify';
 import {showFailedToast, showSuccessToast, showWarningToast} from '../config/showToast';
 import {Link} from 'react-router-dom';
-import { signUpApiHandler} from "../config/API";
+import {signUpApiHandler} from "../config/API";
 import {emailValidationHandler, passwordValidationHandler} from "../util/validation";
+import Loader from "../config/LoaderConfig";
 
 function SignUpScreen() {
 
@@ -22,10 +23,10 @@ function SignUpScreen() {
         retypePassword: '',
     });
 
+    let [isLoading, setIsLoading] = useState(false);
 
     const isEnabled = (state?.firstName !== '' && state?.lastName !== '' && state?.address !== ''
-                        && state?.email !== '' && state?.password !== '' && state?.retypePassword !== '' &&  state?.password ===  state?.retypePassword);
-
+        && state?.email !== '' && state?.password !== '' && state?.retypePassword !== '' && state?.password === state?.retypePassword);
 
 
     const resetStateHandler = () => {
@@ -43,30 +44,32 @@ function SignUpScreen() {
         if (isEnabled) {
 
             if (emailValidationHandler(state?.email)) {
-            if (passwordValidationHandler(state?.password)) {
-                // ** API invoke
-                let response = await signUpApiHandler({
-                    firstName: state.firstName,
-                    lastName: state.lastName,
-                    address: state.address,
-                    email: state.email,
-                    password: state.password
-                });
+                if (passwordValidationHandler(state?.password)) {
 
-                let {code, result} = response.data
+                    setIsLoading(true);
+                    // ** API invoke
+                    let response = await signUpApiHandler({
+                        firstName: state.firstName,
+                        lastName: state.lastName,
+                        address: state.address,
+                        email: state.email,
+                        password: state.password
+                    });
 
-                if (code === '200') {
-                    showSuccessToast("Account has been created!");
-                    resetStateHandler();
-                } else if (code === '500') {
-                    showFailedToast(result);
+                    let {code, result} = response.data
+
+                    if (code === '200') {
+                        showSuccessToast("Account has been created!");
+                        resetStateHandler();
+                    } else if (code === '500') {
+                        showFailedToast(result);
+                    }
+
+                    setIsLoading(false)
+
+                } else {
+                    showWarningToast("Password is not valid.(minimum 5 characters including numbers )");
                 }
-
-
-
-            } else {
-                showWarningToast("Password is not valid.(minimum 5 characters including numbers )");
-            }
             } else {
                 showWarningToast("Email Address is not valid.");
             }
@@ -204,6 +207,7 @@ function SignUpScreen() {
                 </Link>
             </footer>
 
+            <Loader isLoading={isLoading} />
             {/* toast : important */}
             <ToastContainer/>
         </main>
