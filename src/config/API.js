@@ -1,5 +1,14 @@
 import axios from "axios";
-import {baseURL, getProductsURL, getSuppliersURL, getUserURL, loginURL, signUpURL, updateUserURL} from "./urlConfig";
+import {
+    baseURL,
+    createOrderURL, getOrderByUserEmailURL,
+    getProductsURL,
+    getSuppliersURL,
+    getUserURL,
+    loginURL,
+    signUpURL,
+    updateUserURL
+} from "./urlConfig";
 import {showFailedToast, showSuccessToast} from "./showToast";
 
 // ** AUTH
@@ -103,4 +112,38 @@ export const getAllProductApiHandler = async () => {
 
 
 // ** ORDER
+export const createOrderApiHandler = async ({userDto, totalPrice, shops, details }) => {
+    let url = baseURL + createOrderURL;
+    try {
+        let token = await localStorage.getItem('token');
+        let response = await axios.post(url, {
+            userDto: userDto,
+            totalPrice: totalPrice,
+            shops: shops,
+            details: details,
+        },
+         { headers: {"Authorization" : `Bearer ${JSON.parse(token)}`} } );
+
+        return response;
+
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+
+export const getOrderByUserEmailApiHandler = async () => {
+    let url = baseURL + getOrderByUserEmailURL;
+    try {
+        let token = await localStorage.getItem('token');
+        let response = await axios.get(url,  { headers: {"Authorization" : `Bearer ${JSON.parse(token)}`} });
+        return response;
+    } catch (e) {
+        console.warn(e);
+        showFailedToast("Internal Server Error - code [500]");
+    }
+}
+
+
 // ** ADMIN
