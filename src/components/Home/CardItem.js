@@ -27,7 +27,7 @@ function CardItem({
         setIsModalOpen(false);
 
         let temp = [];
-        if (cart) {
+        if (cart !=null) {
             temp = [...cart];
         }
 

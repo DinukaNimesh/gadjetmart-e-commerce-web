@@ -36,6 +36,7 @@ function LoginScreen() {
 
                 // ** store token
                await localStorage.setItem('token', JSON.stringify(result.token));
+               await localStorage.setItem('email', JSON.stringify(credential.username));
 
                // ** navigate to home
                 navigate && navigate('/home');
@@ -101,9 +102,9 @@ function LoginScreen() {
                         Let's Go
                     </Button>
 
-                    <label id='warning-text'>
-                        <b>WARNING: </b>
-                        Example@gmail.com is not a valid email address.</label>
+                    {/*<label id='warning-text'>*/}
+                    {/*    <b>WARNING: </b>*/}
+                    {/*    Example@gmail.com is not a valid email address.</label>*/}
                 </div>
             </div>
 
