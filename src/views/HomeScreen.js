@@ -5,7 +5,7 @@ import '../css/views/HomeScreen.css';
 // ** external components
 import { Button, Badge } from 'reactstrap';
 import { ToastContainer } from 'react-toastify';
-import { showFailedToast, showSuccessToast } from '../config/showToast';
+import {showFailedToast, showSuccessToast, showWarningToast} from '../config/showToast';
 // ** import components
 import CompanyPanel from '../components/Home/CompanyPanel';
 import { Link } from 'react-router-dom';
@@ -45,6 +45,7 @@ function HomeScreen() {
 
 
         }, []);
+
 
 
 
@@ -109,10 +110,12 @@ function HomeScreen() {
 
 
                         <section>
-                                <CompanyPanel products={products} supplier={suppliers[selectSupplier]}/>
+                                <CompanyPanel products={products} supplier={suppliers[selectSupplier]} isLoading={isLoading}/>
+
                         </section>
                         <Loader isLoading={isLoading} />
-
+                        {/* toast : important */}
+                        <ToastContainer/>
                 </main>
         )
 }

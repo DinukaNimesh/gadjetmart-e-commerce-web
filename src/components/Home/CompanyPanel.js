@@ -8,8 +8,10 @@ import {Button} from 'reactstrap';
 import Select from 'react-select';
 // ** import components
 import CardItem from './CardItem';
+import {showWarningToast} from "../../config/showToast";
+import {ToastContainer} from "react-toastify";
 
-function CompanyPanel({products = [], supplier = ''}) {
+function CompanyPanel({products = [], supplier = '', isLoading}) {
 
     let [selectProduct, setSelectProduct] = useState([]);
     let [selectBrand, setSelectBrand] = useState('');
@@ -23,6 +25,13 @@ function CompanyPanel({products = [], supplier = ''}) {
     const categoryOptions = [
         {value: '', label: ''},
     ]
+
+useEffect(() => {
+    console.log(supplier)
+    if (!isLoading &&supplier && products && selectProduct?.length === 0 ) {
+        showWarningToast(supplier?.name +" at under maintenance. Please try again later!")
+    }
+}, [selectProduct])
 
 
     if (supplier && products) {
@@ -142,7 +151,11 @@ function CompanyPanel({products = [], supplier = ''}) {
                                                                                        supplier={supplier.name}
                 />)}
 
+
+
             </main>
+            {/* toast : important */}
+            <ToastContainer/>
         </>
     )
 }
