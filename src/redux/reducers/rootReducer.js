@@ -1,10 +1,10 @@
 // ** Redux Imports
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 
-import authReducer from './authReducer';
+import cartReducer from './cartReducer';
 
 const rootReducer = combineReducers({
-    authState: authReducer,
-    });
-    
-    export default rootReducer;
+    cartState: cartReducer,
+});
+
+export default rootReducer;

@@ -17,8 +17,6 @@ function HomeScreen() {
         let[suppliers, setSuppliers] = useState([]);
         let[products, setProducts] = useState([]);
         let[selectSupplier, setSelectSupplier] = useState(0);
-        let[brandOption, setBrandOption] = useState({});
-        let[categoryOption, setCategoryOption] = useState({});
 
 
         useEffect(() => {

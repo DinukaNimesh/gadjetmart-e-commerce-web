@@ -11,10 +11,10 @@ import CardItem from './CardItem';
 
 function CompanyPanel({products = [], supplier = ''}) {
 
-    let[selectProduct, setSelectProduct] = useState([]);
-    let[selectBrand, setSelectBrand] = useState('');
-    let[selectCategory, setSelectCategory] = useState('');
-    let[text, setText] = useState('');
+    let [selectProduct, setSelectProduct] = useState([]);
+    let [selectBrand, setSelectBrand] = useState('');
+    let [selectCategory, setSelectCategory] = useState('');
+    let [text, setText] = useState('');
 
     const brandOptions = [
         {value: '', label: ''},
@@ -42,35 +42,34 @@ function CompanyPanel({products = [], supplier = ''}) {
 
         uniquePro?.map(item => {
             brandOptions.push(
-                {value: item,  label: item }
+                {value: item, label: item}
             );
         })
 
         uniqueCat?.map(item => {
             categoryOptions.push(
-                {value: item,  label: item }
+                {value: item, label: item}
             );
         });
     }
 
 
-
     useEffect(() => {
-        if (supplier && products ) {
+        if (supplier && products) {
             setSelectProduct(products[supplier?.name]);
         }
     }, [products, supplier]);
 
     useEffect(() => {
-       if (text === '') {
-           if (supplier && products ) {
-               setSelectProduct(products[supplier?.name]);
-           }
-       }
+        if (text === '') {
+            if (supplier && products) {
+                setSelectProduct(products[supplier?.name]);
+            }
+        }
     }, [text]);
 
 
-    const isEnabled=selectBrand && selectCategory && text;
+    const isEnabled = selectBrand && selectCategory && text;
 
     const filterHandler = () => {
         let filter = selectProduct?.filter(product => {
@@ -81,7 +80,7 @@ function CompanyPanel({products = [], supplier = ''}) {
     }
 
     const resetHandler = () => {
-        if (supplier && products ) {
+        if (supplier && products) {
             setSelectProduct(products[supplier?.name]);
         }
         setSelectCategory('');
@@ -97,12 +96,12 @@ function CompanyPanel({products = [], supplier = ''}) {
             <section id='filter-container'>
                 <div id='filter-item'>
                     <label>Brand</label>
-                    <Select options={brandOptions}  onChange={(val) => setSelectBrand(val.value)}/>
+                    <Select options={brandOptions} onChange={(val) => setSelectBrand(val.value)}/>
                 </div>
 
                 <div id='filter-item'>
                     <label>Category</label>
-                    <Select options={categoryOptions}  onChange={(val) => setSelectCategory(val.value)}/>
+                    <Select options={categoryOptions} onChange={(val) => setSelectCategory(val.value)}/>
                 </div>
 
                 <div id='filter-item'>
@@ -135,11 +134,13 @@ function CompanyPanel({products = [], supplier = ''}) {
             <main id='home-tab-panel-container'>
 
                 {supplier && products && selectProduct?.map((item, index) => <CardItem key={index}
-                                                                                                  data={item}
-                                                                                                  title={item?.name}
-                                                                                                  image={item.images[0]}
-                                                                                                  description={item?.description}
-                                                                                                  price={item?.price}/>)}
+                                                                                       data={item}
+                                                                                       title={item?.name}
+                                                                                       image={item.images[0]}
+                                                                                       description={item?.description}
+                                                                                       price={item?.price}
+                                                                                       supplier={supplier.name}
+                />)}
 
             </main>
         </>

@@ -28,7 +28,7 @@ function LoginScreen() {
                 password: credential.password,
             });
 
-            console.log("response", response)
+
             let {code, result} = response?.data
 
             if (code === '200') {
@@ -70,7 +70,6 @@ function LoginScreen() {
                     placeholder=''
                     value={credential?.username}
                     onChange={(val) => {
-                        console.log(val.target.value);
                         setCredential({
                             ...credential,
                             username: val?.target?.value
