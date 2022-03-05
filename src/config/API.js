@@ -50,12 +50,14 @@ export const updateUserApiHandler =  async ({firstName, lastName, address, email
     let url = baseURL + updateUserURL;
 
     try {
+        let token = await localStorage.getItem('token');
         let response = await axios.post(url, {
             email: email,
             firstName: firstName,
             lastName: lastName,
             address: address,
-        });
+        },
+            { headers: {"Authorization" : `Bearer ${JSON.parse(token)}`} });
 
         let {code, result} = response.data
 
@@ -73,7 +75,9 @@ export const updateUserApiHandler =  async ({firstName, lastName, address, email
 export const getUserApiHandler =  async (email) => {
     let url = baseURL + getUserURL + email;
     try {
-        let data = await axios.get(url);
+        let token = await localStorage.getItem('token');
+        let response = await axios.get(url, { headers: {"Authorization" : `Bearer ${JSON.parse(token)}`} });
+        return response;
     } catch (e) {
         console.warn(e);
         showFailedToast("Internal Server Error - code [500]");

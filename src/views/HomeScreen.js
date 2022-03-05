@@ -18,12 +18,13 @@ function HomeScreen() {
         let[suppliers, setSuppliers] = useState([]);
         let[products, setProducts] = useState([]);
         let[selectSupplier, setSelectSupplier] = useState(0);
+        let[isLoading, setIsLoading] = useState(false);
 
         let cart = useSelector(state => state.cartState.cart);
 
         useEffect(() => {
                 (async function () {
-
+                        setIsLoading(true);
                         let response = await getSupplierApiHandler();
                         let response2 = await getAllProductApiHandler();
 
@@ -39,6 +40,7 @@ function HomeScreen() {
                         } else {
                                 setProducts([]);
                         }
+                        setIsLoading(false);
                 })();
 
 
@@ -58,9 +60,9 @@ function HomeScreen() {
                                 </div>
 
                                 <div id='header-action-container'>
-                                        <div>
+                                        <Link to='/profile'>
                                                 <img src={require('../assets/profile.png')} id="header-profile-logo" />
-                                        </div>
+                                        </Link>
 
                                         <Link to='/cart'>
                                                 <img src={require('../assets/cart.png')} id="header-cart-logo" />
@@ -109,7 +111,7 @@ function HomeScreen() {
                         <section>
                                 <CompanyPanel products={products} supplier={suppliers[selectSupplier]}/>
                         </section>
-                        <Loader isLoading={false} />
+                        <Loader isLoading={isLoading} />
 
                 </main>
         )
