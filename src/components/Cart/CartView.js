@@ -72,6 +72,7 @@ function CartView() {
 
     const payNowHandler = async () => {
         let email = await localStorage.getItem('email');
+        email = JSON.parse(email)
         let userDto = {email};
 
 

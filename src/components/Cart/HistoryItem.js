@@ -27,14 +27,14 @@ function HistoryItem({item=[]}) {
     </div>)
   }
 
-
+  console.log(item)
 
   return (
     <main id='history-item-container'>
         <header id="history-header-container">
-          <h6>order ref: #6004</h6>
-          <h6>total price: LKR 129000</h6>
-          <h6>created date: 2022-03-04 01:33:59</h6>
+          <h6>order ref: {item?.orderRef}</h6>
+          <h6>total price: {item?.totalPrice}</h6>
+          <h6>created date: {item?.createDateTime}</h6>
 
             <Button
                 id='checkout-button'
