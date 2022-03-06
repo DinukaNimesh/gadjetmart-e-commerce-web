@@ -138,8 +138,8 @@ export const createOrderApiHandler = async ({userDto, totalPrice, shops, details
 
 
 export const getOrderByUserEmailApiHandler = async (email) => {
-    let url = baseURL + getOrderByUserEmailURL + "vidu996@gmail.com";
-    // let url = baseURL + getOrderByUserEmailURL + email;
+    // let url = baseURL + getOrderByUserEmailURL + "vidu996@gmail.com";
+    let url = baseURL + getOrderByUserEmailURL + email;
     try {
         let token = await localStorage.getItem('token');
         let response = await axios.get(url,  { headers: {"Authorization" : `Bearer ${JSON.parse(token)}`} });
